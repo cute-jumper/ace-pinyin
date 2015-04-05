@@ -1,4 +1,6 @@
 #+TITLE: ace-pinyin
+[[http://melpa.org/#/ace-pinyin][file:http://melpa.org/packages/ace-pinyin-badge.svg]]
+
 Jump to Chinese character by pinyin with =ace-jump-mode=
 
 * Setup
