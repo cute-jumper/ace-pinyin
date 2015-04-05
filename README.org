@@ -16,5 +16,5 @@ Jump to Chinese character by pinyin with =ace-jump-mode=
   characters.
 
 * Acknowledgment
-  The letter to Chinese character table(=fbpd-char-table= in code) is from
-  https://github.com/redguardtoo/find-by-pinyin-dired.
+  The letter to Chinese character table(=ace-pinyin--char-table= in code) is
+  from https://github.com/redguardtoo/find-by-pinyin-dired.
