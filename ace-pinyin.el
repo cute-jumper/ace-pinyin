@@ -23,7 +23,26 @@
 
 ;;; Commentary:
 
-;;
+;; #+TITLE: ace-pinyin
+;; Jump to Chinese character by pinyin with =ace-jump-mode=
+
+;; * Setup
+;;   : (add-to-list 'load-path "/path/to/ace-pinyin.el")
+;;   : (require 'ace-pinyin)
+
+;; * Usage
+;;   Available command: =ace-pinyin=
+
+;;   Input the first letter of the pinyin of the Chinese character, then use
+;;   =ace-jump-char-mode= to jump to it!
+
+;;   If called with no prefix, then it can jump to both Chinese characters and
+;;   English letters. If called with prefix, it can only jump to Chinese
+;;   characters.
+
+;; * Acknowledgment
+;;   The letter to Chinese character table(=fbpd-char-table= in code) is from
+;;   https://github.com/redguardtoo/find-by-pinyin-dired.
 
 ;;; Code:
 
@@ -69,7 +88,7 @@
 
 ;;;###autoload
 (defun ace-pinyin (prefix)
-  "With prefix, only search Chinese
+  "With PREFIX, only search Chinese.
 
 Basically copy the implementation of `ace-jump-char-mode'"
   (interactive "P")
