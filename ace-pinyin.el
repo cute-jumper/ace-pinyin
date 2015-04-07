@@ -146,9 +146,9 @@ Without PREFIX, search both Chinese and English."
 (define-minor-mode ace-pinyin-mode
   "Toggle `ace-pinyin-mode'
 
-If turned on, `ace-jump-char-mode' will be place with `ace-pinyin-jump-char',
-which is able to search Chinese and English at the same time"
-  nil
+If turned on, `ace-jump-char-mode' will be replaced with
+`ace-pinyin-jump-char', which is able to jump to Chinese and
+English characters" nil
   " AcePY"
   :group ace-pinyin)
 
