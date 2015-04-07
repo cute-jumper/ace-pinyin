@@ -1,21 +1,44 @@
 #+TITLE: ace-pinyin
 [[http://melpa.org/#/ace-pinyin][file:http://melpa.org/packages/ace-pinyin-badge.svg]]
 
-Jump to Chinese character by pinyin with =ace-jump-mode=
+Make =ace-jump-char-mode= capable of jumping to Chinese characters: input the
+first letter of the pinyin of the Chinese character, then use
+=ace-jump-char-mode= to jump to it.
 
 * Setup
   : (add-to-list 'load-path "/path/to/ace-pinyin.el")
   : (require 'ace-pinyin)
 
+  Or install via [[http://melpa.org/#/ace-pinyin][melpa]].
 * Usage
-  Available command: =ace-pinyin=
 
-  Input the first letter of the pinyin of the Chinese character, then use
-  =ace-jump-char-mode= to jump to it!
+  This package defines =ace-pinyin-mode= and =ace-pinyin-global-mode=. You can
+  use
+  : (ace-pinyin-mode +1)
+  to enable the minor mode. If you want to enable it globally, you can use
+  : (ace-pinyin-global-mode +1)
 
-  If called with no prefix, then it can jump to both Chinese characters and
-  English letters. If called with prefix, it can only jump to Chinese
-  characters.
+  If the minor mode is enabled, then =ace-jump-char-mode= will be able to jump
+  to both Chinese and English characters. That is, you don't need remember an
+  extra command to jump to Chinese character, just enable the minor mode and use
+  =ace-jump-char-mode= to jump to Chinese characters. Besides, all other
+  packages using =ace-jump-char-mode= will also be able to jump to Chinese
+  characters. For example, if you've installed [[https://github.com/waymondo/ace-jump-zap][ace-jump-zap]], it will also be
+  able to zap to a Chinese character by the first letter of pinyin.
+
+  Other available command:
+** =ace-pinyin-dwim=
+   If called with no prefix, it can jump to both Chinese characters and English
+   letters. If called with prefix, it can only jump to Chinese characters.
+
+** Demo
+   Enable =ace-pinyin-mode= and use =ace-jump-char-mode= to jump to Chinese
+   characters:
+   [[./screencasts/ace-pinyin-jump-char.gif]]
+
+   If you have installed [[https://github.com/waymondo/ace-jump-zap][ace-jump-zap]], then enabling =ace-pinyin-mode= will also
+   make =ace-jump-zap-to-char= capable of handling Chinese characters.
+   [[./screencasts/ace-jump-zap.gif]]      
 
 * Acknowledgment
   The letter to Chinese character table(=ace-pinyin--char-table= in code) is

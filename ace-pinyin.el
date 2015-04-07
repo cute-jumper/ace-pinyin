@@ -1,10 +1,10 @@
-;;; ace-pinyin.el --- Jump to Chinese character by pinyin with `ace-jump-mode'
+;;; ace-pinyin.el --- Make `ace-jump-char-mode' capable of jumping to Chinese characters
 
 ;; Copyright (C) 2015  Junpeng Qiu
 
 ;; Author: Junpeng Qiu <qjpchmail@gmail.com>
 ;; URL: https://github.com/cute-jumper/ace-pinyin
-;; Version: 0.1
+;; Version: 0.2
 ;; Package-Requires: ((ace-jump-mode "2.0"))
 ;; Keywords: extensions
 
@@ -23,26 +23,44 @@
 
 ;;; Commentary:
 
+;; Demos: See https://github.com/cute-jumper/ace-pinyin
+
 ;; #+TITLE: ace-pinyin
-;; Jump to Chinese character by pinyin with =ace-jump-mode=
+;; [[http://melpa.org/#/ace-pinyin][file:http://melpa.org/packages/ace-pinyin-badge.svg]]
+
+;; Make =ace-jump-char-mode= capable of jumping to Chinese characters: input the
+;; first letter of the pinyin of the Chinese character, then use
+;; =ace-jump-char-mode= to jump to it.
 
 ;; * Setup
 ;;   : (add-to-list 'load-path "/path/to/ace-pinyin.el")
 ;;   : (require 'ace-pinyin)
 
+;;   Or install via [[http://melpa.org/#/ace-pinyin][melpa]].
 ;; * Usage
-;;   Available command: =ace-pinyin=
 
-;;   Input the first letter of the pinyin of the Chinese character, then use
-;;   =ace-jump-char-mode= to jump to it!
+;;   This package defines =ace-pinyin-mode= and =ace-pinyin-global-mode=. You can
+;;   use
+;;   : (ace-pinyin-mode +1)
+;;   to enable the minor mode. If you want to enable it globally, you can use
+;;   : (ace-pinyin-global-mode +1)
 
-;;   If called with no prefix, then it can jump to both Chinese characters and
-;;   English letters. If called with prefix, it can only jump to Chinese
-;;   characters.
+;;   If the minor mode is enabled, then =ace-jump-char-mode= will be able to jump
+;;   to both Chinese and English characters. That is, you don't need remember an
+;;   extra command to jump to Chinese character, just enable the minor mode and use
+;;   =ace-jump-char-mode= to jump to Chinese characters. Besides, all other
+;;   packages using =ace-jump-char-mode= will also be able to jump to Chinese
+;;   characters. For example, if you've installed [[https://github.com/waymondo/ace-jump-zap][ace-jump-zap]], it will also be
+;;   able to zap to a Chinese character by the first letter of pinyin.
+
+;;   Other available command:
+;; ** =ace-pinyin-dwim=
+;;    If called with no prefix, it can jump to both Chinese characters and English
+;;    letters. If called with prefix, it can only jump to Chinese characters.
 
 ;; * Acknowledgment
-;;   The letter to Chinese character table(=ace-pinyin--char-table= in code) is from
-;;   https://github.com/redguardtoo/find-by-pinyin-dired.
+;;   The letter to Chinese character table(=ace-pinyin--char-table= in code) is
+;;   from https://github.com/redguardtoo/find-by-pinyin-dired.
 
 ;;; Code:
 
@@ -79,24 +97,67 @@
     "[杂扎砸咋咂匝拶在再载灾仔宰哉栽崽甾咱赞暂攒簪糌瓒拶昝趱錾藏脏葬赃臧锗奘驵早造遭糟澡灶躁噪凿枣皂燥蚤藻缲唣则责泽择咋啧仄迮笮箦舴帻赜昃贼怎谮增赠憎缯罾甑锃炸扎咋诈乍眨渣札栅轧闸榨喳揸柞楂哳吒铡砟齄咤痄蚱摘债宅窄斋寨翟砦瘵战展站占沾斩辗粘盏崭瞻绽蘸湛詹毡栈谵搌旃长张章丈掌涨帐障账胀仗杖彰璋蟑樟瘴漳嶂鄣獐仉幛嫜着找照招朝赵召罩兆昭肇沼诏钊啁棹笊这着者折哲浙遮辙辄谪蔗蛰褶鹧锗磔摺蜇赭柘真阵镇震针珍圳振诊枕斟贞侦赈甄臻箴疹砧桢缜畛轸胗稹祯浈溱蓁椹榛朕鸩政正证整争征挣郑症睁徵蒸怔筝拯铮峥狰诤鲭钲帧之只知至制直治指支志职致值织纸止质执智置址枝秩植旨滞徵帜稚挚汁掷殖芝吱肢脂峙侄窒蜘趾炙痔咫芷栉枳踯桎帙栀祉轾贽痣豸卮轵埴陟郅黹忮彘骘酯摭絷跖膣雉鸷胝蛭踬祗觯中种重众终钟忠衷肿仲锺踵盅冢忪舯螽周州洲粥舟皱骤轴宙咒昼肘帚胄纣诌绉妯碡啁荮籀繇酎主住注助著逐诸朱驻珠祝猪筑竹煮嘱柱烛铸株瞩蛛伫拄贮洙诛褚铢箸蛀茱炷躅竺杼翥渚潴麈槠橥苎侏瘃疰邾舳抓爪拽嘬传专转赚撰砖篆啭馔颛装状壮庄撞妆幢桩奘僮戆追坠缀锥赘隹椎惴骓缒准谆窀肫着桌捉卓琢灼酌拙浊濯茁啄斫镯涿焯浞倬禚诼擢子自字资咨紫滋仔姿吱兹孜梓渍籽姊恣滓谘龇秭呲辎锱眦笫髭淄茈觜訾缁耔鲻嵫赀孳粢趑总宗纵踪综棕粽鬃偬腙枞走奏邹揍驺鲰诹陬鄹组足族祖租阻卒诅俎镞菹赚钻攥纂躜缵最罪嘴醉咀觜蕞尊遵樽鳟撙作做坐座左昨琢佐凿撮柞嘬怍胙唑笮阼祚酢]")
   "ASCII Char to Chinese Characters.")
 
-(defun ace-pinyin--build-regexp (query-char prefix)
+(defgroup ace-pinyin nil
+  "Make `ace-jump-char-mode' capable of jumping to Chinese characters"
+  :group 'ace-jump-mode)
+
+(defvar ace-pinyin--jump-char-mode-original
+  (symbol-function 'ace-jump-char-mode)
+  "Original definition of `ace-jump-char-mode'")
+
+(defun ace-pinyin--build-regexp (query-char &optional prefix)
   (let ((diff (- query-char ?a)))
     (if (and (< diff 26) (>= diff 0))
         (let ((regexp (nth diff ace-pinyin--char-table)))
           (if prefix regexp (concat (format "[%c]\\|" query-char) regexp)))
       (regexp-quote (make-string 1 query-char)))))
 
-;;;###autoload
-(defun ace-pinyin (prefix)
-  "With PREFIX, only search Chinese.
+(defun ace-pinyin--jump-impl (query-char &optional prefix)
+  "Basically copy the implementation of `ace-jump-char-mode'"
+  (if ace-jump-current-mode (ace-jump-done))
+  
+  (if (eq (ace-jump-char-category query-char) 'other)
+    (error "[AceJump] Non-printable character"))
 
-Basically copy the implementation of `ace-jump-char-mode'"
+  ;; others : digit , alpha, punc
+  (setq ace-jump-query-char query-char)
+  (setq ace-jump-current-mode 'ace-jump-char-mode)
+  (ace-jump-do (ace-pinyin--build-regexp query-char prefix)))
+
+(defun ace-pinyin-jump-char (query-char)
+  "AceJump char mode with pinyin.
+Same sigature as `ace-jump-char-mode'"
+  (interactive (list (read-char "Query Char:")))
+  (if ace-pinyin-mode
+      (ace-pinyin--jump-impl query-char)
+    (funcall ace-pinyin--jump-char-mode-original query-char)))
+
+(fset 'ace-jump-char-mode 'ace-pinyin-jump-char)
+
+;;;###autoload
+(defun ace-pinyin-dwim (&optional prefix)
+  "With PREFIX, only search Chinese.
+Without PREFIX, search both Chinese and English."
   (interactive "P")
   (let ((query-char (read-char "Query Char:")))
-    (if ace-jump-current-mode (ace-jump-done))
-    (setq ace-jump-query-char query-char)
-    (setq ace-jump-current-mode 'ace-jump-char-mode)
-    (ace-jump-do (ace-pinyin--build-regexp query-char prefix))))
+    (ace-pinyin--jump-impl query-char prefix)))
+
+;;;###autoload
+(define-minor-mode ace-pinyin-mode
+  "Toggle `ace-pinyin-mode'
+
+If turned on, `ace-jump-char-mode' will be place with `ace-pinyin-jump-char',
+which is able to search Chinese and English at the same time"
+  nil
+  " AcePY"
+  :group ace-pinyin)
+
+;;;###autoload
+(define-globalized-minor-mode ace-pinyin-global-mode
+  ace-pinyin-mode
+  (lambda () (ace-pinyin-mode 1))
+  :group 'ace-pinyin
+  :require 'ace-pinyin)
 
 (provide 'ace-pinyin)
 ;;; ace-pinyin.el ends here
