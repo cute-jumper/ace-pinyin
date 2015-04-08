@@ -101,6 +101,11 @@
   "Make `ace-jump-char-mode' capable of jumping to Chinese characters"
   :group 'ace-jump-mode)
 
+(defcustom ace-pinyin--jump-word-timeout 1
+  "Seconds to wait for input."
+  :type 'number
+  :group 'ace-pinyin)
+
 (defvar ace-pinyin--jump-char-mode-original
   (symbol-function 'ace-jump-char-mode)
   "Original definition of `ace-jump-char-mode'")
@@ -133,6 +138,36 @@ Same sigature as `ace-jump-char-mode'"
     (funcall ace-pinyin--jump-char-mode-original query-char)))
 
 (fset 'ace-jump-char-mode 'ace-pinyin-jump-char)
+
+(defun ace-pinyin--jump-word-1 (query)
+  (if ace-jump-current-mode (ace-jump-done))
+
+  (let ((case-fold-search nil))
+    (when (string-match-p "[^a-z]" query)
+      (error "[AceJump] Non-lower case character")))
+
+  (setq ace-jump-current-mode 'ace-jump-char-mode)
+  (ace-jump-do
+   (mapconcat (lambda (char) (nth (- char ?a) ace-pinyin--char-table))
+              query "")))
+
+;;;###autoload
+(defun ace-pinyin-jump-word (arg)
+  "Jump to Chinese word.
+If ARG is non-nil, read input from Minibuffer."
+  (interactive "P")
+  (if arg
+      ;; Read input from minibuffer
+      (ace-pinyin--jump-word-1 (read-string "Query Word: "))
+    ;; Read input by using timer
+    (message "Query word: ")
+    (let (char string)
+      (while (setq char (read-char nil nil ace-pinyin--jump-word-timeout))
+        (setq string (concat string (char-to-string char)))
+        (message (concat "Query word: " string)))
+      (if string
+          (ace-pinyin--jump-word-1 string)
+        (error "[AceJump] Empty input, timeout")))))
 
 ;;;###autoload
 (defun ace-pinyin-dwim (&optional prefix)
