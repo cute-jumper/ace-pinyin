@@ -140,10 +140,13 @@ Same sigature as `ace-jump-char-mode'"
 (fset 'ace-jump-char-mode 'ace-pinyin-jump-char)
 
 (defun ace-pinyin--jump-word-1 (query)
+  (if ace-jump-current-mode (ace-jump-done))
+
   (let ((case-fold-search nil))
     (when (string-match-p "[^a-z]" query)
       (error "[AceJump] Non-lower case character")))
 
+  (setq ace-jump-current-mode 'ace-jump-char-mode)
   (ace-jump-do
    (mapconcat (lambda (char) (nth (- char ?a) ace-pinyin--char-table))
               query "")))
