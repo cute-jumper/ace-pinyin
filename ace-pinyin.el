@@ -53,10 +53,18 @@
 ;;   characters. For example, if you've installed [[https://github.com/waymondo/ace-jump-zap][ace-jump-zap]], it will also be
 ;;   able to zap to a Chinese character by the first letter of pinyin.
 
-;;   Other available command:
+;; *  Other available command
 ;; ** =ace-pinyin-dwim=
 ;;    If called with no prefix, it can jump to both Chinese characters and English
 ;;    letters. If called with prefix, it can only jump to Chinese characters.
+
+;; ** =ace-pinyin-jump-word=
+;;    Using this command, you can jump to the start of a sequence of Chinese
+;;    characters(/i.e./ Chinese word) by typing the sequence of the first letters
+;;    of these character's pinyins. If called without prefix, this command will
+;;    read user's input with a default timeout 1 second(You can customize the
+;;    timeout value). If called with prefix, then it will read input from the
+;;    minibuffer and starts search after you press "enter".
 
 ;; * Acknowledgment
 ;;   The letter to Chinese character table(=ace-pinyin--char-table= in code) is
