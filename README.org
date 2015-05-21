@@ -1,9 +1,10 @@
 #+TITLE: ace-pinyin
 [[http://melpa.org/#/ace-pinyin][file:http://melpa.org/packages/ace-pinyin-badge.svg]]
+[[http://stable.melpa.org/#/ace-pinyin][file:http://stable.melpa.org/packages/ace-pinyin-badge.svg]]
 
-Make =ace-jump-char-mode= capable of jumping to Chinese characters: input the
-first letter of the pinyin of the Chinese character, then use
-=ace-jump-char-mode= to jump to it.
+Jump to Chinese characters using =ace-jump-char-mode= or =avy-goto-char= : input
+the first letter of the pinyin of the Chinese character, then use
+=ace-jump-char-mode= or =avy-goto-char= to jump to it.
 
 * Setup
   : (add-to-list 'load-path "/path/to/ace-pinyin.el")
@@ -12,19 +13,36 @@ first letter of the pinyin of the Chinese character, then use
   Or install via [[http://melpa.org/#/ace-pinyin][melpa]].
 * Usage
 
-  This package defines =ace-pinyin-mode= and =ace-pinyin-global-mode=. You can
-  use
-  : (ace-pinyin-mode +1)
-  to enable the minor mode. If you want to enable it globally, you can use
+  *UPDATE*: The up-to-date version now supports [[https://github.com/abo-abo/avy][avy]], which I personally think is
+  better than [[https://github.com/winterTTr/ace-jump-mode][ace-jump-mode]]. However, by default this package is still using
+  =ace-jump-mode=.
+
+  You can make the =ace-pinyin= use =avy= by:
+  : (setq ace-pinyin-use-avy t)
+
+  Note =ace-pinyin-use-avy= variable should be set *BEFORE* you call
+  =ace-pinyin-globa-mode= or =turn-on-ace-pinyin-mode=.
+
+  Example config to use =ace-pinyin= globally:
+  : ;; (setq ace-pinyin-use-avy t) ;; uncomment if you want to use `avy'
   : (ace-pinyin-global-mode +1)
 
-  If the minor mode is enabled, then =ace-jump-char-mode= will be able to jump
-  to both Chinese and English characters. That is, you don't need remember an
-  extra command to jump to Chinese character, just enable the minor mode and use
-  =ace-jump-char-mode= to jump to Chinese characters. Besides, all other
-  packages using =ace-jump-char-mode= will also be able to jump to Chinese
-  characters. For example, if you've installed [[https://github.com/waymondo/ace-jump-zap][ace-jump-zap]], it will also be
-  able to zap to a Chinese character by the first letter of pinyin.
+  If you want to turn on/off =ace-pinyin-mode= locally, don't directly call
+  =ace-pinyin-mode=. Use =turn-on-ace-pinyin-mode= or =turn-off-ace-pinyin-mode=
+  instead.
+
+  When the minor mode is enabled, then =ace-jump-char-mode= (or =avy-goto-char=,
+  depends on your config) will be able to jump to both Chinese and English
+  characters. That is, you don't need remember an extra command or create extra
+  key bindings in order to jump to Chinese character. Just enable the minor mode
+  and use =ace-jump-char-mode= (or =avy-goto-char=) to jump to Chinese
+  characters.
+
+  Besides, all other packages using =ace-jump-char-mode= (or =avy-goto-char=)
+  will also be able to jump to Chinese characters. For example, if you've
+  installed [[https://github.com/waymondo/ace-jump-zap][ace-jump-zap]](which is implemented using =ace-jump-mode=, so you
+  can't use =avy= in this case), it will also be able to zap to a Chinese
+  character by the first letter of pinyin.
 
 *  Other available command
 ** =ace-pinyin-dwim=
@@ -46,7 +64,7 @@ first letter of the pinyin of the Chinese character, then use
 
    If you have installed [[https://github.com/waymondo/ace-jump-zap][ace-jump-zap]], then enabling =ace-pinyin-mode= will also
    make =ace-jump-zap-to-char= capable of handling Chinese characters.
-   [[./screencasts/ace-jump-zap.gif]]      
+   [[./screencasts/ace-jump-zap.gif]]
 
 * Acknowledgment
   The letter to Chinese character table(=ace-pinyin--char-table= in code) is

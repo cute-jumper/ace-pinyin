@@ -1,11 +1,11 @@
-;;; ace-pinyin.el --- Make `ace-jump-char-mode' capable of jumping to Chinese characters
+;;; ace-pinyin.el --- Jump to Chinese characters using ace-jump-char-mode or avy-goto-char
 
 ;; Copyright (C) 2015  Junpeng Qiu
 
 ;; Author: Junpeng Qiu <qjpchmail@gmail.com>
 ;; URL: https://github.com/cute-jumper/ace-pinyin
 ;; Version: 0.2
-;; Package-Requires: ((ace-jump-mode "2.0"))
+;; Package-Requires: ((ace-jump-mode "2.0") (avy "0.2.0"))
 ;; Keywords: extensions
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -26,11 +26,9 @@
 ;; Demos: See https://github.com/cute-jumper/ace-pinyin
 
 ;; #+TITLE: ace-pinyin
-;; [[http://melpa.org/#/ace-pinyin][file:http://melpa.org/packages/ace-pinyin-badge.svg]]
-
-;; Make =ace-jump-char-mode= capable of jumping to Chinese characters: input the
-;; first letter of the pinyin of the Chinese character, then use
-;; =ace-jump-char-mode= to jump to it.
+;; Jump to Chinese characters using =ace-jump-char-mode= or =avy-goto-char= : input
+;; the first letter of the pinyin of the Chinese character, then use
+;; =ace-jump-char-mode= or =avy-goto-char= to jump to it.
 
 ;; * Setup
 ;;   : (add-to-list 'load-path "/path/to/ace-pinyin.el")
@@ -39,19 +37,36 @@
 ;;   Or install via [[http://melpa.org/#/ace-pinyin][melpa]].
 ;; * Usage
 
-;;   This package defines =ace-pinyin-mode= and =ace-pinyin-global-mode=. You can
-;;   use
-;;   : (ace-pinyin-mode +1)
-;;   to enable the minor mode. If you want to enable it globally, you can use
+;;   *UPDATE*: The up-to-date version now supports [[https://github.com/abo-abo/avy][avy]], which I personally think is
+;;   better than [[https://github.com/winterTTr/ace-jump-mode][ace-jump-mode]]. However, by default this package is still using
+;;   =ace-jump-mode=.
+
+;;   You can make the =ace-pinyin= use =avy= by:
+;;   : (setq ace-pinyin-use-avy t)
+
+;;   Note =ace-pinyin-use-avy= variable should be set *BEFORE* you call
+;;   =ace-pinyin-globa-mode= or =turn-on-ace-pinyin-mode=.
+
+;;   Example config to use =ace-pinyin= globally:
+;;   : ;; (setq ace-pinyin-use-avy t) ;; uncomment if you want to use `avy'
 ;;   : (ace-pinyin-global-mode +1)
 
-;;   If the minor mode is enabled, then =ace-jump-char-mode= will be able to jump
-;;   to both Chinese and English characters. That is, you don't need remember an
-;;   extra command to jump to Chinese character, just enable the minor mode and use
-;;   =ace-jump-char-mode= to jump to Chinese characters. Besides, all other
-;;   packages using =ace-jump-char-mode= will also be able to jump to Chinese
-;;   characters. For example, if you've installed [[https://github.com/waymondo/ace-jump-zap][ace-jump-zap]], it will also be
-;;   able to zap to a Chinese character by the first letter of pinyin.
+;;   If you want to turn on/off =ace-pinyin-mode= locally, don't directly call
+;;   =ace-pinyin-mode=. Use =turn-on-ace-pinyin-mode= or =turn-off-ace-pinyin-mode=
+;;   instead.
+
+;;   When the minor mode is enabled, then =ace-jump-char-mode= (or =avy-goto-char=,
+;;   depends on your config) will be able to jump to both Chinese and English
+;;   characters. That is, you don't need remember an extra command or create extra
+;;   key bindings in order to jump to Chinese character. Just enable the minor mode
+;;   and use =ace-jump-char-mode= (or =avy-goto-char=) to jump to Chinese
+;;   characters.
+
+;;   Besides, all other packages using =ace-jump-char-mode= (or =avy-goto-char=)
+;;   will also be able to jump to Chinese characters. For example, if you've
+;;   installed [[https://github.com/waymondo/ace-jump-zap][ace-jump-zap]](which is implemented using =ace-jump-mode=, so you
+;;   can't use =avy= in this case), it will also be able to zap to a Chinese
+;;   character by the first letter of pinyin.
 
 ;; *  Other available command
 ;; ** =ace-pinyin-dwim=
@@ -73,6 +88,7 @@
 ;;; Code:
 
 (require 'ace-jump-mode)
+(require 'avy)
 
 ;; From `https://github.com/redguardtoo/find-by-pinyin-dired'
 ;; Author: redguardtoo(Chen Bin)
@@ -114,9 +130,15 @@
   :type 'number
   :group 'ace-pinyin)
 
+(defvar ace-pinyin-use-avy nil
+  "Use `avy' or `ace-jump-mode'.
+Default value is to use ace-jump-mode")
+
 (defvar ace-pinyin--jump-char-mode-original
-  (symbol-function 'ace-jump-char-mode)
-  "Original definition of `ace-jump-char-mode'")
+  (if ace-pinyin-use-avy
+      (symbol-function 'avy-goto-char)
+    (symbol-function 'ace-jump-char-mode))
+  "Original definition of `ace-jump-char-mode' or `avy-goto-char'.")
 
 (defun ace-pinyin--build-regexp (query-char &optional prefix)
   (let ((diff (- query-char ?a)))
@@ -126,26 +148,27 @@
       (regexp-quote (make-string 1 query-char)))))
 
 (defun ace-pinyin--jump-impl (query-char &optional prefix)
-  "Basically copy the implementation of `ace-jump-char-mode'"
-  (if ace-jump-current-mode (ace-jump-done))
-  
-  (if (eq (ace-jump-char-category query-char) 'other)
-    (error "[AceJump] Non-printable character"))
-
-  ;; others : digit , alpha, punc
-  (setq ace-jump-query-char query-char)
-  (setq ace-jump-current-mode 'ace-jump-char-mode)
-  (ace-jump-do (ace-pinyin--build-regexp query-char prefix)))
+  "Internal implementation of `ace-pinyin-jump-char'."
+  (let ((regexp (ace-pinyin--build-regexp query-char prefix)))
+    (if ace-pinyin-use-avy
+        (avy--with-avy-keys avy-goto-char
+                            (avy--generic-jump regexp nil avy-style))
+      (if ace-jump-current-mode (ace-jump-done))
+      (if (eq (ace-jump-char-category query-char) 'other)
+          (error "[AceJump] Non-printable character"))
+      ;; others : digit , alpha, punc
+      (setq ace-jump-query-char query-char)
+      (setq ace-jump-current-mode 'ace-jump-char-mode)
+      (ace-jump-do regexp))))
 
 (defun ace-pinyin-jump-char (query-char)
-  "AceJump char mode with pinyin.
-Same sigature as `ace-jump-char-mode'"
-  (interactive (list (read-char "Query Char:")))
+  "AceJump with pinyin by QUERY-CHAR."
+  (interactive (list (if ace-pinyin-use-avy
+                         (read-char "char: ")
+                       (read-char "Query Char:"))))
   (if ace-pinyin-mode
       (ace-pinyin--jump-impl query-char)
     (funcall ace-pinyin--jump-char-mode-original query-char)))
-
-(fset 'ace-jump-char-mode 'ace-pinyin-jump-char)
 
 (defun ace-pinyin--jump-word-1 (query)
   (if ace-jump-current-mode (ace-jump-done))
@@ -182,14 +205,17 @@ If ARG is non-nil, read input from Minibuffer."
   "With PREFIX, only search Chinese.
 Without PREFIX, search both Chinese and English."
   (interactive "P")
-  (let ((query-char (read-char "Query Char:")))
+  (let ((query-char (if ace-pinyin-use-avy
+                        (read-char "char: ")
+                      (read-char "Query Char:"))))
     (ace-pinyin--jump-impl query-char prefix)))
 
-;;;###autoload
 (define-minor-mode ace-pinyin-mode
   "Toggle `ace-pinyin-mode'
 
-If turned on, `ace-jump-char-mode' will be replaced with
+Don't call this function directly. Use `turn-on-ace-pinyin-mode'
+and `turn-off-ace-pinyin-mode' instead. If turned on,
+`ace-jump-char-mode' or `avy-goto-char' will be replaced with
 `ace-pinyin-jump-char', which is able to jump to Chinese and
 English characters" nil
   " AcePY"
@@ -198,9 +224,35 @@ English characters" nil
 ;;;###autoload
 (define-globalized-minor-mode ace-pinyin-global-mode
   ace-pinyin-mode
-  (lambda () (ace-pinyin-mode 1))
+  turn-on-ace-pinyin-mode
   :group 'ace-pinyin
   :require 'ace-pinyin)
+
+;;;###autoload
+(defun turn-on-ace-pinyin-mode ()
+  "Turn on `ace-pinyin-mode'."
+  (interactive)
+  (if ace-pinyin-use-avy
+      (progn
+        (setq ace-pinyin--jump-char-mode-original
+              (symbol-function 'avy-goto-char))
+        (fset 'avy-goto-char 'ace-pinyin-jump-char))
+    (setq ace-pinyin--jump-char-mode-original
+          (symbol-function 'ace-jump-char-mode))
+    (fset 'ace-jump-char-mode 'ace-pinyin-jump-char))
+  (ace-pinyin-mode +1))
+
+;;;###autoload
+(defun turn-off-ace-pinyin-mode ()
+  "Turn off `ace-pinyin-mode'."
+  (interactive)
+  (unless ace-pinyin-mode
+    (error "Ace-pinyin is not turned on."))
+  (fset (if ace-pinyin-use-avy
+            'avy-goto-char
+          'ace-jump-char-mode)
+        ace-pinyin--jump-char-mode-original)
+  (ace-pinyin-mode -1))
 
 (provide 'ace-pinyin)
 ;;; ace-pinyin.el ends here
