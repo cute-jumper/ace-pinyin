@@ -171,16 +171,20 @@ Default value is to use ace-jump-mode")
     (funcall ace-pinyin--jump-char-mode-original query-char)))
 
 (defun ace-pinyin--jump-word-1 (query)
-  (if ace-jump-current-mode (ace-jump-done))
+  (let ((regexp
+         (mapconcat (lambda (char) (nth (- char ?a) ace-pinyin--char-table))
+                    query "")))
+    (if ace-pinyin-use-avy
+        (avy--with-avy-keys avy-goto-char
+          (avy--generic-jump regexp nil avy-style))
+      (if ace-jump-current-mode (ace-jump-done))
 
-  (let ((case-fold-search nil))
-    (when (string-match-p "[^a-z]" query)
-      (error "[AceJump] Non-lower case character")))
+      (let ((case-fold-search nil))
+        (when (string-match-p "[^a-z]" query)
+          (error "[AcePinyin] Non-lower case character")))
 
-  (setq ace-jump-current-mode 'ace-jump-char-mode)
-  (ace-jump-do
-   (mapconcat (lambda (char) (nth (- char ?a) ace-pinyin--char-table))
-              query "")))
+      (setq ace-jump-current-mode 'ace-jump-char-mode)
+      (ace-jump-do regexp))))
 
 ;;;###autoload
 (defun ace-pinyin-jump-word (arg)
@@ -198,7 +202,7 @@ If ARG is non-nil, read input from Minibuffer."
         (message (concat "Query word: " string)))
       (if string
           (ace-pinyin--jump-word-1 string)
-        (error "[AceJump] Empty input, timeout")))))
+        (error "[AcePinyin] Empty input, timeout")))))
 
 ;;;###autoload
 (defun ace-pinyin-dwim (&optional prefix)
