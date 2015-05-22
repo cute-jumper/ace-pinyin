@@ -134,25 +134,27 @@
   "Use `avy' or `ace-jump-mode'.
 Default value is to use ace-jump-mode")
 
-(defvar ace-pinyin--jump-char-mode-original
-  (if ace-pinyin-use-avy
-      (symbol-function 'avy-goto-char)
-    (symbol-function 'ace-jump-char-mode))
-  "Original definition of `ace-jump-char-mode' or `avy-goto-char'.")
+(defvar ace-pinyin--original-ace (symbol-function 'ace-jump-char-mode)
+  "Original definition of `ace-jump-char-mode'.")
+
+(defvar ace-pinyin--original-avy (symbol-function 'avy-goto-char)
+  "Original definition of `avy-goto-char'.")
 
 (defun ace-pinyin--build-regexp (query-char &optional prefix)
   (let ((diff (- query-char ?a)))
     (if (and (< diff 26) (>= diff 0))
         (let ((regexp (nth diff ace-pinyin--char-table)))
           (if prefix regexp (concat (format "[%c]\\|" query-char) regexp)))
-      (regexp-quote (make-string 1 query-char)))))
+      (if (= 13 query-char)
+          "\n"
+        (regexp-quote (make-string 1 query-char))))))
 
 (defun ace-pinyin--jump-impl (query-char &optional prefix)
   "Internal implementation of `ace-pinyin-jump-char'."
   (let ((regexp (ace-pinyin--build-regexp query-char prefix)))
     (if ace-pinyin-use-avy
         (avy--with-avy-keys avy-goto-char
-                            (avy--generic-jump regexp nil avy-style))
+          (avy--generic-jump regexp nil avy-style))
       (if ace-jump-current-mode (ace-jump-done))
       (if (eq (ace-jump-char-category query-char) 'other)
           (error "[AceJump] Non-printable character"))
@@ -166,9 +168,12 @@ Default value is to use ace-jump-mode")
   (interactive (list (if ace-pinyin-use-avy
                          (read-char "char: ")
                        (read-char "Query Char:"))))
-  (if ace-pinyin-mode
-      (ace-pinyin--jump-impl query-char)
-    (funcall ace-pinyin--jump-char-mode-original query-char)))
+  (cond (ace-pinyin-mode
+         (ace-pinyin--jump-impl query-char))
+        (ace-pinyin-use-avy
+         (funcall ace-pinyin--original-avy query-char))
+        (t
+         (funcall ace-pinyin--original-ace query-char))))
 
 (defun ace-pinyin--jump-word-1 (query)
   (let ((regexp
@@ -236,13 +241,10 @@ English characters" nil
 (defun turn-on-ace-pinyin-mode ()
   "Turn on `ace-pinyin-mode'."
   (interactive)
+  (when ace-pinyin-mode
+    (error "Ace-pinyin mode has already been turned on."))
   (if ace-pinyin-use-avy
-      (progn
-        (setq ace-pinyin--jump-char-mode-original
-              (symbol-function 'avy-goto-char))
-        (fset 'avy-goto-char 'ace-pinyin-jump-char))
-    (setq ace-pinyin--jump-char-mode-original
-          (symbol-function 'ace-jump-char-mode))
+      (fset 'avy-goto-char 'ace-pinyin-jump-char)
     (fset 'ace-jump-char-mode 'ace-pinyin-jump-char))
   (ace-pinyin-mode +1))
 
@@ -251,11 +253,10 @@ English characters" nil
   "Turn off `ace-pinyin-mode'."
   (interactive)
   (unless ace-pinyin-mode
-    (error "Ace-pinyin is not turned on."))
-  (fset (if ace-pinyin-use-avy
-            'avy-goto-char
-          'ace-jump-char-mode)
-        ace-pinyin--jump-char-mode-original)
+    (error "Ace-pinyin mode hasn't been turned on."))
+  (if ace-pinyin-use-avy
+      (fset 'avy-goto-char ace-pinyin--original-avy)
+    (fset 'ace-jump-char-mode ace-pinyin--original-ace))
   (ace-pinyin-mode -1))
 
 (provide 'ace-pinyin)
