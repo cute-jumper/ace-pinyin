@@ -58,13 +58,17 @@ the first letter of the pinyin of the Chinese character, then use
    minibuffer and starts search after you press "enter".
 
 * Demo
-   Enable =ace-pinyin-mode= and use =ace-jump-char-mode= to jump to Chinese
-   characters:
-   [[./screencasts/ace-pinyin-jump-char.gif]]
+  *WARNING*: The demo is a little out of date. You should use
+  =ace-pinyin-global-mode= (globally) or =turn-on-ace-pinyin-mode= (locally)
+  instead of =ace-pinyin-mode= to enable the minor mode!
 
-   If you have installed [[https://github.com/waymondo/ace-jump-zap][ace-jump-zap]], then enabling =ace-pinyin-mode= will also
-   make =ace-jump-zap-to-char= capable of handling Chinese characters.
-   [[./screencasts/ace-jump-zap.gif]]
+  Enable =ace-pinyin-mode= and use =ace-jump-char-mode= to jump to Chinese
+  characters:
+  [[./screencasts/ace-pinyin-jump-char.gif]]
+
+  If you have installed [[https://github.com/waymondo/ace-jump-zap][ace-jump-zap]], then enabling =ace-pinyin-mode= will also
+  make =ace-jump-zap-to-char= capable of handling Chinese characters.
+  [[./screencasts/ace-jump-zap.gif]]
 
 * Acknowledgment
   The letter to Chinese character table(=ace-pinyin--char-table= in code) is
