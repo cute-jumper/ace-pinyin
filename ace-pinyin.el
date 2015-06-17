@@ -312,27 +312,25 @@ English characters" nil
 (defun turn-on-ace-pinyin-mode ()
   "Turn on `ace-pinyin-mode'."
   (interactive)
-  (when ace-pinyin-mode
-    (error "Ace-pinyin mode has already been turned on."))
-  (if ace-pinyin-use-avy
-      (progn
-        (fset 'avy-goto-char 'ace-pinyin-jump-char)
-        (fset 'avy-goto-char-2 'ace-pinyin-jump-char-2))
-    (fset 'ace-jump-char-mode 'ace-pinyin-jump-char))
-  (ace-pinyin-mode +1))
+  (unless ace-pinyin-mode
+    (if ace-pinyin-use-avy
+        (progn
+          (fset 'avy-goto-char 'ace-pinyin-jump-char)
+          (fset 'avy-goto-char-2 'ace-pinyin-jump-char-2))
+      (fset 'ace-jump-char-mode 'ace-pinyin-jump-char))
+    (ace-pinyin-mode +1)))
 
 ;;;###autoload
 (defun turn-off-ace-pinyin-mode ()
   "Turn off `ace-pinyin-mode'."
   (interactive)
-  (unless ace-pinyin-mode
-    (error "Ace-pinyin mode hasn't been turned on."))
-  (if ace-pinyin-use-avy
-      (progn
-        (fset 'avy-goto-char ace-pinyin--original-avy)
-        (fset 'avy-goto-char-2 ace-pinyin--original-avy-2))
-    (fset 'ace-jump-char-mode ace-pinyin--original-ace))
-  (ace-pinyin-mode -1))
+  (when ace-pinyin-mode
+    (if ace-pinyin-use-avy
+        (progn
+          (fset 'avy-goto-char ace-pinyin--original-avy)
+          (fset 'avy-goto-char-2 ace-pinyin--original-avy-2))
+      (fset 'ace-jump-char-mode ace-pinyin--original-ace))
+    (ace-pinyin-mode -1)))
 
 (provide 'ace-pinyin)
 ;;; ace-pinyin.el ends here
