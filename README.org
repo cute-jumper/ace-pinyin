@@ -6,6 +6,9 @@ Jump to Chinese characters using =ace-jump-char-mode= or =avy-goto-char= : input
 the first letter of the pinyin of the Chinese character, then use
 =ace-jump-char-mode= or =avy-goto-char= to jump to it.
 
+*UPDATE*: Now =avy-goto-char-2= is also support if you set =ace-pinyin-use-avy=
+to be =t=.
+
 * Setup
   : (add-to-list 'load-path "/path/to/ace-pinyin.el")
   : (require 'ace-pinyin)
@@ -44,7 +47,7 @@ the first letter of the pinyin of the Chinese character, then use
   can't use =avy= in this case), it will also be able to zap to a Chinese
   character by the first letter of pinyin.
 
-*  Other available command
+* Other available command
 ** =ace-pinyin-dwim=
    If called with no prefix, it can jump to both Chinese characters and English
    letters. If called with prefix, it can only jump to Chinese characters.
