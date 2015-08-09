@@ -202,7 +202,10 @@ Default value is to use ace-jump-mode")
   (let ((diff (- query-char ?a)))
     (if (and (< diff 26) (>= diff 0))
         (let ((regexp (nth diff ace-pinyin--char-table)))
-          (if prefix regexp (concat (format "[%c]\\|" query-char) regexp)))
+          (if prefix regexp
+            (concat (format "[%c]" query-char)
+                    (unless (string= regexp "") "\\|")
+                    regexp)))
       (if (= 13 query-char)
           "\n"
         (regexp-quote (make-string 1 query-char))))))
