@@ -214,7 +214,7 @@ Default value is to use ace-jump-mode")
   "Internal implementation of `ace-pinyin-jump-char'."
   (let ((regexp (ace-pinyin--build-regexp query-char prefix)))
     (if ace-pinyin-use-avy
-        (avy--with-avy-keys avy-goto-char
+        (avy-with avy-goto-char
           (avy--generic-jump regexp nil avy-style))
       (if ace-jump-current-mode (ace-jump-done))
       (if (eq (ace-jump-char-category query-char) 'other)
@@ -241,7 +241,7 @@ Default value is to use ace-jump-mode")
   (interactive (list (read-char "char 1: ")
                      (read-char "char 2: ")
                      current-prefix-arg))
-  (avy--with-avy-keys avy-goto-char-2
+  (avy-with avy-goto-char-2
     (avy--generic-jump
      (concat "\\("
              (mapconcat #'ace-pinyin--build-regexp (list char1 char2) "\\)\\(")
@@ -254,7 +254,7 @@ Default value is to use ace-jump-mode")
          (mapconcat (lambda (char) (nth (- char ?a) ace-pinyin--char-table))
                     query "")))
     (if ace-pinyin-use-avy
-        (avy--with-avy-keys avy-goto-char
+        (avy-with avy-goto-char
           (avy--generic-jump regexp nil avy-style))
       (if ace-jump-current-mode (ace-jump-done))
 
