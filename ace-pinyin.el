@@ -48,6 +48,10 @@
 ;; : input the first letter of the pinyin of the Chinese character, then
 ;; use `ace-jump-char-mode' or `avy-goto-char' to jump to it.
 
+;; *UPDATE*: The up-to-date version now supports [avy], which I
+;; personally think is better than [ace-jump-mode]. However, by default
+;; this package is still using `ace-jump-mode'.
+
 ;; *UPDATE*: Now `avy-goto-char-2' is also support if you set
 ;; `ace-pinyin-use-avy' to be `t'.
 
@@ -68,10 +72,6 @@
 
 ;; 2 Usage
 ;; =======
-
-;;   *UPDATE*: The up-to-date version now supports [avy], which I
-;;   personally think is better than [ace-jump-mode]. However, by default
-;;   this package is still using `ace-jump-mode'.
 
 ;;   You can make the `ace-pinyin' use `avy' by:
 ;;   ,----
@@ -100,16 +100,16 @@
 
 ;;   Besides, all other packages using `ace-jump-char-mode' (or
 ;;   `avy-goto-char') will also be able to jump to Chinese characters. For
-;;   example, if you've installed [ace-jump-zap](which is implemented using
-;;   `ace-jump-mode', so you can't use `avy' in this case), it will also be
-;;   able to zap to a Chinese character by the first letter of pinyin.
+;;   example, if you've installed [ace-jump-zap], it will also be able to zap
+;;   to a Chinese character by the first letter of pinyin. Note
+;;   `ace-jump-zap' is implemented by using `ace-jump-mode', so you can't use
+;;   `avy' in this case. You can check out my fork of `ace-jump-zap' using
+;;   `avy': [avy-zap].
 
-
-;;   [avy] https://github.com/abo-abo/avy
-
-;;   [ace-jump-mode] https://github.com/winterTTr/ace-jump-mode
 
 ;;   [ace-jump-zap] https://github.com/waymondo/ace-jump-zap
+
+;;   [avy-zap] https://github.com/cute-jumper/avy-zap
 
 
 ;; 3 Other available command
