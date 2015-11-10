@@ -79,7 +79,7 @@
 ;;   `----
 
 ;;   Note `ace-pinyin-use-avy' variable should be set *BEFORE* you call
-;;   `ace-pinyin-globa-mode' or `turn-on-ace-pinyin-mode'.
+;;   `ace-pinyin-global-mode' or `turn-on-ace-pinyin-mode'.
 
 ;;   Example config to use `ace-pinyin' globally:
 ;;   ,----

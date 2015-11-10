@@ -24,7 +24,7 @@ better than [[https://github.com/winterTTr/ace-jump-mode][ace-jump-mode]]. Howev
   : (setq ace-pinyin-use-avy t)
 
   Note =ace-pinyin-use-avy= variable should be set *BEFORE* you call
-  =ace-pinyin-globa-mode= or =turn-on-ace-pinyin-mode=.
+  =ace-pinyin-global-mode= or =turn-on-ace-pinyin-mode=.
 
   Example config to use =ace-pinyin= globally:
   : ;; (setq ace-pinyin-use-avy t) ;; uncomment if you want to use `avy'
