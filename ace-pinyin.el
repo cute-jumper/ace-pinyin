@@ -137,7 +137,7 @@
 ;; 4 Acknowledgment
 ;; ================
 
-;;   The letter to Chinese character table(`ace-pinyin--simplied-char-table' in
+;;   The letter to Chinese character table(`ace-pinyin--simplified-char-table' in
 ;;   code) is from [https://github.com/redguardtoo/find-by-pinyin-dired].
 
 ;;; Code:
@@ -147,7 +147,7 @@
 
 ;; From `https://github.com/redguardtoo/find-by-pinyin-dired'
 ;; Author: redguardtoo(Chen Bin)
-(defconst ace-pinyin--simplied-char-table
+(defconst ace-pinyin--simplified-char-table
   '("[阿啊呵腌嗄锕吖爱哀挨碍埃癌艾唉矮哎皑蔼隘暧霭捱嗳瑷嫒锿嗌砹安案按暗岸俺谙黯鞍氨庵桉鹌胺铵揞犴埯昂肮盎奥澳傲熬敖凹袄懊坳嗷拗鏖骜鳌翱岙廒遨獒聱媪螯鏊]"
     "[把八吧巴爸罢拔叭芭霸靶扒疤跋坝笆耙粑灞茇菝魃岜捌钯鲅百白败摆伯拜柏呗掰捭佰稗办半版般班板伴搬扮斑颁瓣拌扳绊阪坂瘢钣舨癍帮邦棒膀榜傍绑磅谤浜梆镑蚌蒡报保包暴宝抱薄胞爆鲍饱堡曝刨褒豹雹苞葆褓孢煲鸨龅趵被北备背悲辈杯倍贝碑卑蓓惫悖狈呗焙鹎孛邶陂埤碚褙鐾鞴萆钡本奔笨苯夯畚贲锛坌崩甭绷蹦迸甏泵嘣蚌比必笔毕币避闭鼻彼逼壁臂弊碧鄙毙蔽庇匕璧敝陛弼篦婢愎痹妣濞铋裨俾髀萆薜哔狴庳秕滗舭毖吡嬖蓖贲畀荸埤筚箅芘襞跸荜编便边变遍辩辨贬鞭辫扁卞砭苄匾汴蝙笾碥窆褊弁鳊忭煸缏表标彪镖膘骠镳裱杓飙瘭髟飚婊飑鳔别憋瘪蹩鳖宾滨彬斌鬓缤殡濒槟摈膑傧玢豳髌镔并病兵冰饼丙柄秉炳禀邴摒波播博伯勃薄拨泊柏剥玻驳卜脖搏膊饽簸掰舶跛礴菠帛铂钵渤檗钹擘箔趵孛鹁踣亳啵不部布步补捕怖卜簿哺埔卟埠钸逋醭晡瓿钚]"
     "[擦嚓礤才采菜财材彩裁猜蔡踩睬参餐残惨灿惭掺蚕璨孱骖黪粲藏苍仓沧舱伧草操曹糙嘈槽螬艚漕策测侧厕册恻参岑涔曾层蹭噌查察差茶插刹叉诧茬碴喳岔嚓衩杈楂槎檫镲搽锸猹馇汊姹差柴拆豺钗侪虿瘥产颤缠禅蝉馋铲搀阐掺潺忏蟾婵谄谗廛孱澶冁躔蒇骣觇镡羼长场常唱厂尝昌肠偿畅倡倘敞怅娼猖嫦伥氅徜昶鲳阊菖苌鬯惝超朝潮炒吵抄嘲钞绰巢晁焯怊耖车彻撤扯澈掣坼砗称陈沉晨尘臣趁衬辰郴谶琛忱嗔伧抻谌宸榇龀碜成城程称承诚盛乘呈撑惩澄秤瞠橙噌逞铛丞骋埕枨塍铖裎酲柽蛏吃持迟尺赤斥池痴齿驰耻翅匙侈哧嗤啻弛蚩炽笞敕叱饬踟鸱褫豉坻墀茌篪傺媸螭彳眵魑瘛重冲充崇虫宠憧忡艟茺舂铳抽愁仇丑筹臭酬绸踌瞅惆畴稠雠俦帱瘳出处除初楚触储础厨畜躇橱雏矗怵锄杵搐绌黜褚蜍蹰刍滁楮憷亍樗揣啜踹嘬膪搋传穿川船串喘舛遄舡巛氚椽钏创窗床闯幢疮怆吹垂炊锤捶陲槌棰春纯唇蠢醇淳椿鹑蝽莼绰戳啜辍踔龊此次词差刺辞慈磁赐瓷兹茨雌祠疵呲鹚糍茈从匆聪丛葱囱琮淙枞苁骢璁凑楱辏腠促粗簇醋卒猝蹴蹙徂殂蔟酢攒窜篡蹿撺镩汆爨脆粹催摧崔萃翠瘁悴璀隹淬毳榱啐存村寸忖皴错措搓挫撮磋蹉矬嵯脞痤瘥鹾厝锉]"
@@ -206,8 +206,7 @@
   "ASCII char to traditional Chinese characters.
 Translated from ace-pinyin, powered by OpenCC.  Thanks to BYVoid.")
 
-(defconst ace-pinyin--char-table ace-pinyin--simplied-char-table)
-(make-obsolete-variable 'ace-pinyin--char-table 'ace-pinyin--simplied-char-table "20151126")
+(define-obsolete-variable-alias 'ace-pinyin--char-table 'ace-pinyin--simplified-char-table "20151126")
 
 (defgroup ace-pinyin nil
   "Make `ace-jump-char-mode' capable of jumping to Chinese characters"
@@ -222,9 +221,9 @@ Translated from ace-pinyin, powered by OpenCC.  Thanks to BYVoid.")
   "Use `avy' or `ace-jump-mode'.
 Default value is to use `ace-jump-mode'.")
 
-(defvar ace-pinyin-simplied-chinese-only-p t
+(defvar ace-pinyin-simplified-chinese-only-p t
   "Whether `ace-pinyin' should use only simplified Chinese or not.
-Default value is only using simplied Chinese characters.")
+Default value is only using simplified Chinese characters.")
 
 (defvar ace-pinyin--original-ace (symbol-function 'ace-jump-char-mode)
   "Original definition of `ace-jump-char-mode'.")
@@ -242,8 +241,8 @@ Default value is only using simplied Chinese characters.")
   (let ((diff (- query-char ?a)))
     (if (and (< diff 26) (>= diff 0))
         (let ((regexp (nth diff
-                           (if ace-pinyin-simplied-chinese-only-p
-                               ace-pinyin--simplied-char-table
+                           (if ace-pinyin-simplified-chinese-only-p
+                               ace-pinyin--simplified-char-table
                              ace-pinyin--traditional-char-table))))
           (if prefix regexp
             (concat (format "[%c]" query-char)
@@ -306,8 +305,8 @@ Default value is only using simplied Chinese characters.")
 (defun ace-pinyin--jump-word-1 (query)
   (let ((regexp
          (mapconcat (lambda (char) (nth (- char ?a)
-                                    (if ace-pinyin-simplied-chinese-only-p
-                                        ace-pinyin--simplied-char-table
+                                    (if ace-pinyin-simplified-chinese-only-p
+                                        ace-pinyin--simplified-char-table
                                       ace-pinyin--traditional-char-table)))
                     query "")))
     (if ace-pinyin-use-avy
