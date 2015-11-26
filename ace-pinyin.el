@@ -156,7 +156,7 @@
 ;; 5 Acknowledgment
 ;; ================
 
-;;   - The ASCII char to Chinese character table(`ace-pinyin--char-table'
+;;   - The ASCII char to Chinese character table(`ace-pinyin--simplified-char-table'
 ;;     in code) is from
 ;;     [https://github.com/redguardtoo/find-by-pinyin-dired].
 ;;   - @erstern adds the table for traditional Chinese characters.

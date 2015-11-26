@@ -78,6 +78,6 @@ by setting =ace-pinyin-simplified-chinese-only-p= to =nil=.
   [[./screencasts/ace-jump-zap.gif]]
 
 * Acknowledgment
-  - The ASCII char to Chinese character table(=ace-pinyin--char-table= in code)
+  - The ASCII char to Chinese character table(=ace-pinyin--simplified-char-table= in code)
     is from https://github.com/redguardtoo/find-by-pinyin-dired.
   - @erstern adds the table for traditional Chinese characters.
