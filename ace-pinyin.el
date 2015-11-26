@@ -1,4 +1,4 @@
-;;; ace-pinyin.el --- Jump to Chinese characters using ace-jump-char-mode or avy-goto-char
+;;; ace-pinyin.el --- Jump to Chinese characters using ace-jump-mode or avy
 
 ;; Copyright (C) 2015  Junpeng Qiu
 
@@ -38,22 +38,24 @@
 
 ;; 1 Setup
 ;; 2 Usage
-;; 3 Other available command
-;; .. 3.1 `ace-pinyin-dwim'
-;; .. 3.2 `ace-pinyin-jump-word'
-;; 4 Acknowledgment
+;; 3 Traditional Chinese Characters Support
+;; 4 Other available commands
+;; .. 4.1 `ace-pinyin-dwim'
+;; .. 4.2 `ace-pinyin-jump-word'
+;; 5 Acknowledgment
 
 
-;; Jump to Chinese characters using `ace-jump-char-mode' or `avy-goto-char'
-;; : input the first letter of the pinyin of the Chinese character, then
-;; use `ace-jump-char-mode' or `avy-goto-char' to jump to it.
+;; Jump to Chinese characters using `ace-jump-mode' or `avy'.
 
-;; *UPDATE*: The up-to-date version now supports [avy], which I
-;; personally think is better than [ace-jump-mode]. However, by default
-;; this package is still using `ace-jump-mode'.
+;; UPDATE(2015-11-26): Now jumping to traditional Chinese characters is
+;; supported by setting `ace-pinyin-simplified-chinese-only-p' to `nil'.
 
-;; *UPDATE*: Now `avy-goto-char-2' is also support if you set
-;; `ace-pinyin-use-avy' to be `t'.
+
+;; [[file:http://melpa.org/packages/ace-pinyin-badge.svg]]
+;; http://melpa.org/#/ace-pinyin
+
+;; [[file:http://stable.melpa.org/packages/ace-pinyin-badge.svg]]
+;; http://stable.melpa.org/#/ace-pinyin
 
 
 ;; 1 Setup
@@ -73,10 +75,16 @@
 ;; 2 Usage
 ;; =======
 
-;;   You can make the `ace-pinyin' use `avy' by:
+;;   By default this package is using `ace-jump-mode'. When using
+;;   `ace-jump-mode', the `ace-jump-char-mode' command can jump to Chinese
+;;   characters. If you prefer `avy', you can make `ace-pinyin' use `avy'
+;;   by:
 ;;   ,----
 ;;   | (setq ace-pinyin-use-avy t)
 ;;   `----
+
+;;   When using `avy', `avy-goto-char', `avy-goto-char-2' and
+;;   `avy-goto-char-in-line' are supported to jump to Chinese characters.
 
 ;;   Note `ace-pinyin-use-avy' variable should be set *BEFORE* you call
 ;;   `ace-pinyin-global-mode' or `turn-on-ace-pinyin-mode'.
@@ -100,11 +108,11 @@
 
 ;;   Besides, all other packages using `ace-jump-char-mode' (or
 ;;   `avy-goto-char') will also be able to jump to Chinese characters. For
-;;   example, if you've installed [ace-jump-zap], it will also be able to zap
-;;   to a Chinese character by the first letter of pinyin. Note
-;;   `ace-jump-zap' is implemented by using `ace-jump-mode', so you can't use
-;;   `avy' in this case. You can check out my fork of `ace-jump-zap' using
-;;   `avy': [avy-zap].
+;;   example, if you've installed [ace-jump-zap], it will also be able to
+;;   zap to a Chinese character by the first letter of pinyin. Note
+;;   `ace-jump-zap' is implemented by using `ace-jump-mode', so you can't
+;;   use `avy' in this case. You can check out my fork of `ace-jump-zap'
+;;   using `avy': [avy-zap].
 
 
 ;;   [ace-jump-zap] https://github.com/waymondo/ace-jump-zap
@@ -112,10 +120,21 @@
 ;;   [avy-zap] https://github.com/cute-jumper/avy-zap
 
 
-;; 3 Other available command
-;; =========================
+;; 3 Traditional Chinese Characters Support
+;; ========================================
 
-;; 3.1 `ace-pinyin-dwim'
+;;   By default, `ace-pinyin' only supports simplified Chinese characters.
+;;   You can make `ace-pinyin' aware of traditional Chinese characters by
+;;   the following setting:
+;;   ,----
+;;   | (setq ace-pinyin-simplified-chinese-only-p)
+;;   `----
+
+
+;; 4 Other available commands
+;; ==========================
+
+;; 4.1 `ace-pinyin-dwim'
 ;; ~~~~~~~~~~~~~~~~~~~~~
 
 ;;   If called with no prefix, it can jump to both Chinese characters and
@@ -123,7 +142,7 @@
 ;;   characters.
 
 
-;; 3.2 `ace-pinyin-jump-word'
+;; 4.2 `ace-pinyin-jump-word'
 ;; ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;;   Using this command, you can jump to the start of a sequence of Chinese
@@ -134,11 +153,13 @@
 ;;   input from the minibuffer and starts search after you press "enter".
 
 
-;; 4 Acknowledgment
+;; 5 Acknowledgment
 ;; ================
 
-;;   The letter to Chinese character table(`ace-pinyin--simplified-char-table' in
-;;   code) is from [https://github.com/redguardtoo/find-by-pinyin-dired].
+;;   - The ASCII char to Chinese character table(`ace-pinyin--char-table'
+;;     in code) is from
+;;     [https://github.com/redguardtoo/find-by-pinyin-dired].
+;;   - @erstern adds the table for traditional Chinese characters.
 
 ;;; Code:
 
