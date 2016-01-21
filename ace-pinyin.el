@@ -366,6 +366,7 @@ Without PREFIX, search both Chinese and English."
                       (read-char "Query Char:"))))
     (ace-pinyin--jump-impl query-char prefix)))
 
+;;;###autoload
 (define-minor-mode ace-pinyin-mode
   "Toggle `ace-pinyin-mode'."
   nil
