@@ -371,15 +371,23 @@ Without PREFIX, search both Chinese and English."
     (ace-pinyin--jump-impl query-char prefix)))
 
 (define-minor-mode ace-pinyin-mode
-  "Toggle `ace-pinyin-mode'
-
-Don't call this function directly. Use `turn-on-ace-pinyin-mode'
-and `turn-off-ace-pinyin-mode' instead. If turned on,
-`ace-jump-char-mode' or `avy-goto-char' will be replaced with
-`ace-pinyin-jump-char', which is able to jump to Chinese and
-English characters" nil
+  "Toggle `ace-pinyin-mode'."
+  nil
   " AcePY"
-  :group ace-pinyin)
+  :group ace-pinyin
+  (if ace-pinyin-mode
+      (if ace-pinyin-use-avy
+          (progn
+            (fset 'avy-goto-char 'ace-pinyin-jump-char)
+            (fset 'avy-goto-char-2 'ace-pinyin-jump-char-2)
+            (fset 'avy-goto-char-in-line 'ace-pinyin-jump-char-in-line))
+        (fset 'ace-jump-char-mode 'ace-pinyin-jump-char))
+    (if ace-pinyin-use-avy
+        (progn
+          (fset 'avy-goto-char ace-pinyin--original-avy)
+          (fset 'avy-goto-char-2 ace-pinyin--original-avy-2)
+          (fset 'avy-goto-char-in-line ace-pinyin--original-avy-in-line))
+      (fset 'ace-jump-char-mode ace-pinyin--original-ace))))
 
 ;;;###autoload
 (define-globalized-minor-mode ace-pinyin-global-mode
@@ -392,27 +400,13 @@ English characters" nil
 (defun turn-on-ace-pinyin-mode ()
   "Turn on `ace-pinyin-mode'."
   (interactive)
-  (unless ace-pinyin-mode
-    (if ace-pinyin-use-avy
-        (progn
-          (fset 'avy-goto-char 'ace-pinyin-jump-char)
-          (fset 'avy-goto-char-2 'ace-pinyin-jump-char-2)
-          (fset 'avy-goto-char-in-line 'ace-pinyin-jump-char-in-line))
-      (fset 'ace-jump-char-mode 'ace-pinyin-jump-char))
-    (ace-pinyin-mode +1)))
+  (ace-pinyin-mode +1))
 
 ;;;###autoload
 (defun turn-off-ace-pinyin-mode ()
   "Turn off `ace-pinyin-mode'."
   (interactive)
-  (when ace-pinyin-mode
-    (if ace-pinyin-use-avy
-        (progn
-          (fset 'avy-goto-char ace-pinyin--original-avy)
-          (fset 'avy-goto-char-2 ace-pinyin--original-avy-2)
-          (fset 'avy-goto-char-in-line ace-pinyin--original-avy-in-line))
-      (fset 'ace-jump-char-mode ace-pinyin--original-ace))
-    (ace-pinyin-mode -1)))
+  (ace-pinyin-mode -1))
 
 (provide 'ace-pinyin)
 ;;; ace-pinyin.el ends here
