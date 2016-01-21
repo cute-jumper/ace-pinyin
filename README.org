@@ -28,10 +28,6 @@ by setting =ace-pinyin-simplified-chinese-only-p= to =nil=.
   : ;; (setq ace-pinyin-use-avy t) ;; uncomment if you want to use `avy'
   : (ace-pinyin-global-mode +1)
 
-  If you want to turn on/off =ace-pinyin-mode= locally, don't directly call
-  =ace-pinyin-mode=. Use =turn-on-ace-pinyin-mode= or =turn-off-ace-pinyin-mode=
-  instead.
-
   When the minor mode is enabled, then =ace-jump-char-mode= (or =avy-goto-char=,
   depends on your config) will be able to jump to both Chinese and English
   characters. That is, you don't need remember an extra command or create extra
@@ -65,10 +61,6 @@ by setting =ace-pinyin-simplified-chinese-only-p= to =nil=.
    minibuffer and starts search after you press "enter".
 
 * Demo
-  *WARNING*: The demo is a little out of date. You should use
-  =ace-pinyin-global-mode= (globally) or =turn-on-ace-pinyin-mode= (locally)
-  instead of =ace-pinyin-mode= to enable the minor mode!
-
   Enable =ace-pinyin-mode= and use =ace-jump-char-mode= to jump to Chinese
   characters:
   [[./screencasts/ace-pinyin-jump-char.gif]]

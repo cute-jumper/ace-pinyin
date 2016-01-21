@@ -95,10 +95,6 @@
 ;;   | (ace-pinyin-global-mode +1)
 ;;   `----
 
-;;   If you want to turn on/off `ace-pinyin-mode' locally, don't directly
-;;   call `ace-pinyin-mode'. Use `turn-on-ace-pinyin-mode' or
-;;   `turn-off-ace-pinyin-mode' instead.
-
 ;;   When the minor mode is enabled, then `ace-jump-char-mode' (or
 ;;   `avy-goto-char', depends on your config) will be able to jump to both
 ;;   Chinese and English characters. That is, you don't need remember an
