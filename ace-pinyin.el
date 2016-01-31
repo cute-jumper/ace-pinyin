@@ -123,7 +123,7 @@
 ;;   You can make `ace-pinyin' aware of traditional Chinese characters by
 ;;   the following setting:
 ;;   ,----
-;;   | (setq ace-pinyin-simplified-chinese-only-p)
+;;   | (setq ace-pinyin-simplified-chinese-only-p nil)
 ;;   `----
 
 
