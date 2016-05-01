@@ -7,25 +7,29 @@ Jump to Chinese characters using =ace-jump-mode= or =avy=.
 UPDATE(2015-11-26): Now jumping to traditional Chinese characters is supported
 by setting =ace-pinyin-simplified-chinese-only-p= to =nil=.
 
+UPDATE(2016-05-01): Now =ace-pinyin= uses =avy= by default. If you want to use
+=ace-jump-mode=, use:
+: (setq ace-pinyin-use-avy nil)
+
 * Setup
   : (add-to-list 'load-path "/path/to/ace-pinyin.el")
   : (require 'ace-pinyin)
 
   Or install via [[http://melpa.org/#/ace-pinyin][melpa]].
 * Usage
-  By default this package is using =ace-jump-mode=. When using =ace-jump-mode=,
-  the =ace-jump-char-mode= command can jump to Chinese characters. If you prefer
-  =avy=, you can make =ace-pinyin= use =avy= by:
-  : (setq ace-pinyin-use-avy t)
+  By default this package is using =avy=. If you want to use =ace-jump-mode=,
+  set =ace-pinyin-use-avy= to =nil=.
 
   When using =avy=, =avy-goto-char=, =avy-goto-char-2= and
-  =avy-goto-char-in-line= are supported to jump to Chinese characters.
+  =avy-goto-char-in-line= are supported to jump to Chinese characters. When
+  using =ace-jump-mode=, the =ace-jump-char-mode= command can jump to Chinese
+  characters.
 
   Note =ace-pinyin-use-avy= variable should be set *BEFORE* you call
   =ace-pinyin-global-mode= or =turn-on-ace-pinyin-mode=.
 
   Example config to use =ace-pinyin= globally:
-  : ;; (setq ace-pinyin-use-avy t) ;; uncomment if you want to use `avy'
+  : ;; (setq ace-pinyin-use-avy nil) ;; uncomment if you want to use `ace-jump-mode'
   : (ace-pinyin-global-mode +1)
 
   When the minor mode is enabled, then =ace-jump-char-mode= (or =avy-goto-char=,

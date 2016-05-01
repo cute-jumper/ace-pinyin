@@ -234,9 +234,9 @@ Translated from ace-pinyin, powered by OpenCC.  Thanks to BYVoid.")
   :type 'number
   :group 'ace-pinyin)
 
-(defvar ace-pinyin-use-avy nil
-  "Use `avy' or `ace-jump-mode'.
-Default value is to use `ace-jump-mode'.")
+(defvar ace-pinyin-use-avy t
+  "Use `avy' or `ace-jump-mode'. Default value is to use `avy'.
+Changed since 2016-05-01.")
 
 (defvar ace-pinyin-simplified-chinese-only-p t
   "Whether `ace-pinyin' should use only simplified Chinese or not.
