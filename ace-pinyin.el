@@ -389,22 +389,14 @@ Without PREFIX, search both Chinese and English."
           (progn
             (fset 'avy-goto-char 'ace-pinyin-jump-char)
             (fset 'avy-goto-char-2 'ace-pinyin-jump-char-2)
-            (fset 'avy-goto-char-in-line 'ace-pinyin-jump-char-in-line)
-            (when ace-pinyin-treat-word-as-char
-              (fset 'avy-goto-word-1 'ace-pinyin-jump-char)
-              (fset 'avy-goto-subword-1 'ace-pinyin-jump-char)))
-        (fset 'ace-jump-char-mode 'ace-pinyin-jump-char)
-        (when ace-pinyin-treat-word-as-char
-          (fset 'ace-jump-word-mode 'ace-pinyin-jump-char)))
+            (fset 'avy-goto-char-in-line 'ace-pinyin-jump-char-in-line))
+        (fset 'ace-jump-char-mode 'ace-pinyin-jump-char))
     (if ace-pinyin-use-avy
         (progn
           (fset 'avy-goto-char ace-pinyin--original-avy)
           (fset 'avy-goto-char-2 ace-pinyin--original-avy-2)
-          (fset 'avy-goto-char-in-line ace-pinyin--original-avy-in-line)
-          (fset 'avy-goto-word-1 ace-pinyin--original-avy-word-1)
-          (fset 'avy-goto-subword-1 ace-pinyin--original-avy-subword-1))
-      (fset 'ace-jump-char-mode ace-pinyin--original-ace)
-      (fset 'ace-jump-word-mode ace-pinyin--original-ace-word))))
+          (fset 'avy-goto-char-in-line ace-pinyin--original-avy-in-line))
+      (fset 'ace-jump-char-mode ace-pinyin--original-ace))))
 
 ;;;###autoload
 (define-globalized-minor-mode ace-pinyin-global-mode
