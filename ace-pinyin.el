@@ -260,8 +260,14 @@ Default value is only using simplified Chinese characters.")
 (defvar ace-pinyin--original-avy-in-line (symbol-function 'avy-goto-char-in-line)
   "Original definition of `avy-goto-char-in-line'.")
 
+(defvar ace-pinyin--original-avy-word-0 (symbol-function 'avy-goto-word-0)
+  "Original definition of `avy-goto-word-0'.")
+
 (defvar ace-pinyin--original-avy-word-1 (symbol-function 'avy-goto-word-1)
   "Original definition of `avy-goto-word-1'.")
+
+(defvar ace-pinyin--original-avy-subword-0 (symbol-function 'avy-goto-subword-0)
+  "Original definition of `avy-goto-subword-0'.")
 
 (defvar ace-pinyin--original-avy-subword-1 (symbol-function 'avy-goto-subword-1)
   "Original definition of `avy-goto-subword-1'.")
@@ -331,6 +337,75 @@ Default value is only using simplified Chinese characters.")
      (line-beginning-position)
      (line-end-position))))
 
+(defun ace-pinyin-goto-word-0 (arg)
+  "Ace-pinyin replacement of `avy-goto-word-0'."
+  (interactive "P")
+  (let ((avy-goto-word-0-regexp "\\b\\sw\\|\\cc"))
+    (funcall ace-pinyin--original-avy-word-0 arg)))
+
+(defun ace-pinyin-goto-word-1 (char &optional arg)
+  "Ace-pinyin replacement of `avy-goto-word-1'."
+  (interactive (list (read-char "char: " t)
+                     current-prefix-arg))
+  (avy-with avy-goto-word-1
+    (let* ((str (string char))
+           (regex (cond ((string= str ".")
+                         "\\.")
+                        ((and avy-word-punc-regexp
+                              (string-match avy-word-punc-regexp str))
+                         (regexp-quote str))
+                        (t
+                         (concat
+                          "\\b"
+                          str
+                          "\\|"
+                          (ace-pinyin--build-regexp char t))))))
+      (avy--generic-jump regex arg avy-style))))
+
+(defun ace-pinyin-goto-subword-0 (&optional arg predicate)
+  "Ace-pinyin replacement of `avy-goto-subword-0'."
+  (interactive "P")
+  (require 'subword)
+  (avy-with avy-goto-subword-0
+    (let ((case-fold-search nil)
+          (subword-backward-regexp
+           "\\(\\(\\W\\|[[:lower:][:digit:]]\\)\\([!-/:@`~[:upper:]]+\\W*\\)\\|\\W\\w+\\|.\\cc\\)")
+          candidates)
+      (avy-dowindows arg
+        (let ((syn-tbl (copy-syntax-table)))
+          (dolist (char avy-subword-extra-word-chars)
+            (modify-syntax-entry char "w" syn-tbl))
+          (with-syntax-table syn-tbl
+            (let ((ws (window-start))
+                  window-cands)
+              (save-excursion
+                (goto-char (window-end (selected-window) t))
+                (subword-backward)
+                (while (> (point) ws)
+                  (when (or (null predicate)
+                            (and predicate (funcall predicate)))
+                    (unless (get-char-property (point) 'invisible)
+                      (push (cons (point) (selected-window)) window-cands)))
+                  (subword-backward))
+                (and (= (point) ws)
+                     (or (null predicate)
+                         (and predicate (funcall predicate)))
+                     (not (get-char-property (point) 'invisible))
+                     (push (cons (point) (selected-window)) window-cands)))
+              (setq candidates (nconc candidates window-cands))))))
+      (avy--process candidates (avy--style-fn avy-style)))))
+
+(defun ace-pinyin-goto-subword-1 (char &optional arg)
+  "Ace-pinyin replacement of `avy-goto-subword-1'."
+  (interactive (list (read-char "char: " t)
+                     current-prefix-arg))
+  (avy-with avy-goto-subword-1
+    (let* ((char (downcase char))
+           (chinese-regexp (ace-pinyin--build-regexp char t)))
+      (ace-pinyin-goto-subword-0
+       arg (lambda () (or (eq (downcase (char-after)) char)
+                      (string-match-p chinese-regexp (string (char-after)))))))))
+
 (defun ace-pinyin--jump-word-1 (query)
   (let ((regexp
          (mapconcat (lambda (char) (nth (- char ?a)
@@ -389,13 +464,22 @@ Without PREFIX, search both Chinese and English."
           (progn
             (fset 'avy-goto-char 'ace-pinyin-jump-char)
             (fset 'avy-goto-char-2 'ace-pinyin-jump-char-2)
-            (fset 'avy-goto-char-in-line 'ace-pinyin-jump-char-in-line))
+            (fset 'avy-goto-char-in-line 'ace-pinyin-jump-char-in-line)
+            (when ace-pinyin-treat-word-as-char
+              (fset 'avy-goto-word-0 'ace-pinyin-goto-word-0)
+              (fset 'avy-goto-word-1 'ace-pinyin-goto-word-1)
+              (fset 'avy-goto-subword-0 'ace-pinyin-goto-subword-0)
+              (fset 'avy-goto-subword-1 'ace-pinyin-goto-subword-1)))
         (fset 'ace-jump-char-mode 'ace-pinyin-jump-char))
     (if ace-pinyin-use-avy
         (progn
           (fset 'avy-goto-char ace-pinyin--original-avy)
           (fset 'avy-goto-char-2 ace-pinyin--original-avy-2)
-          (fset 'avy-goto-char-in-line ace-pinyin--original-avy-in-line))
+          (fset 'avy-goto-char-in-line ace-pinyin--original-avy-in-line)
+          (fset 'avy-goto-word-0 ace-pinyin--original-avy-word-0)
+          (fset 'avy-goto-word-1 ace-pinyin--original-avy-word-1)
+          (fset 'avy-goto-subword-0 ace-pinyin--original-avy-subword-0)
+          (fset 'avy-goto-subword-1 ace-pinyin--original-avy-subword-1))
       (fset 'ace-jump-char-mode ace-pinyin--original-ace))))
 
 ;;;###autoload
