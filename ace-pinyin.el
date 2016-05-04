@@ -358,8 +358,9 @@ Default value is only using simplified Chinese characters.")
                          (concat
                           "\\b"
                           str
-                          "\\|"
-                          (ace-pinyin--build-regexp char t))))))
+                          (let ((chinese-regexp (ace-pinyin--build-regexp char t)))
+                            (unless (string= chinese-regexp "")
+                              (concat "\\|" chinese-regexp))))))))
       (avy--generic-jump regex arg avy-style))))
 
 (defun ace-pinyin-goto-subword-0 (&optional arg predicate)
