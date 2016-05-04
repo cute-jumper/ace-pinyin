@@ -55,7 +55,7 @@ you're using =avy=, setting this variable to =t= will make =avy-goto-word-*= and
   By default, =ace-pinyin= only supports simplified Chinese characters. You can
   make =ace-pinyin= aware of traditional Chinese characters by the following
   setting:
-  : (setq ace-pinyin-simplified-chinese-only-p t)
+  : (setq ace-pinyin-simplified-chinese-only-p nil)
 
 * Other available commands
 ** =ace-pinyin-dwim=
