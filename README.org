@@ -15,7 +15,8 @@ UPDATE(2016-05-02): A new variable =ace-pinyin-treat-word-as-char= is added and
 its default value is =t=. When this variable is =t=, =ace-pinyin= remaps both
 word and character jumping commands in =avy= or =ace-jump-mode=. For example, if
 you're using =avy=, setting this variable to =t= will make =avy-goto-word-*= and
-=avy-goto-subword-*= be able to jump to Chinese characters.
+=avy-goto-subword-*= be able to jump to Chinese characters as well as English
+words.
 
 * Setup
   : (add-to-list 'load-path "/path/to/ace-pinyin.el")
