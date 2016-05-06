@@ -97,7 +97,8 @@
 ;; 3 Supported Commands
 ;; ====================
 
-;;   When using `avy', the following commands are supported:
+;;   When using `avy', all `avy' commands (as of 05/06/2016) related to
+;;   char/word jumping are supported:
 ;;   - `avy-goto-char'
 ;;   - `avy-goto-char-2'
 ;;   - `avy-goto-char-in-line'
@@ -109,8 +110,6 @@
 
 ;;   When using `ace-jump-mode', the following command is supported:
 ;;   - `ace-jump-char-mode'
-
-;;   More commands will be added gradually and PRs are always welcome!
 
 ;;   When the `ace-pinyin-mode' is enabled, the supported commands will be
 ;;   able to jump to both Chinese and English characters/words. That is,
