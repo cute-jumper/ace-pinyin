@@ -23,8 +23,6 @@
 
 ;;; Commentary:
 
-;; Demos: See https://github.com/cute-jumper/ace-pinyin
-
 ;;                              _____________
 
 ;;                                ACE-PINYIN
@@ -41,7 +39,7 @@
 ;; 3 Supported Commands
 ;; 4 Traditional Chinese Characters Support
 ;; 5 Disable Word Jumping Support
-;; 6 Disable Punctuactions Translation
+;; 6 Disable Punctuations Translation
 ;; 7 Other available commands
 ;; .. 7.1 `ace-pinyin-dwim'
 ;; .. 7.2 `ace-pinyin-jump-word'
@@ -68,7 +66,7 @@
 
 ;;   Install via [melpa].
 
-;;   Or if you prefer install this package manually:
+;;   Or if you prefer to install this package manually:
 ;;   ,----
 ;;   | (add-to-list 'load-path "/path/to/ace-pinyin.el")
 ;;   | (require 'ace-pinyin)
@@ -123,7 +121,7 @@
 ;;   and `.', and `<' to jump to both `《' and `<' etc. Behind the scene,
 ;;   `ace-pinyin' uses [pinyinlib.el] to translate the letter to
 ;;   Simplified/Traditional Chinese characters and English punctuations to
-;;   Chinese punctuations. To see the full list of punctuactions that are
+;;   Chinese punctuations. To see the full list of punctuations that are
 ;;   supported, see [pinyinlib.el].
 
 ;;   Besides, all other packages using `ace-jump-mode' (or `avy') will also
@@ -171,10 +169,10 @@
 ;;   - `avy-goto-word-or-subword-1'
 
 
-;; 6 Disable Punctuactions Translation
-;; ===================================
+;; 6 Disable Punctuations Translation
+;; ==================================
 
-;;   If you don't like the punctuaction support(/i.e./, using English
+;;   If you don't like the punctuation support(/i.e./, using English
 ;;   punctuations to jump to both Chinese/English punctuations), use the
 ;;   following code to disable it:
 ;;   ,----
