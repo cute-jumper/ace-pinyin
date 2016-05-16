@@ -450,11 +450,10 @@ Default value is only using simplified Chinese characters.")
 
 (defun ace-pinyin--jump-word-1 (query)
   (let ((regexp
-         (mapconcat (lambda (char) (nth (- char ?a)
-                                    (if ace-pinyin-simplified-chinese-only-p
-                                        ace-pinyin--simplified-char-table
-                                      ace-pinyin--traditional-char-table)))
-                    query "")))
+         (pinyinlib-build-regexp-string
+          query
+          (not ace-pinyin-enable-punctuation-translation)
+          (not ace-pinyin-simplified-chinese-only-p))))
     (if ace-pinyin-use-avy
         (avy-with avy-goto-char
           (avy--generic-jump regexp nil avy-style))
