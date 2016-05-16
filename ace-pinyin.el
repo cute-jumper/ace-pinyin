@@ -272,6 +272,9 @@
 (require 'avy)
 (require 'pinyinlib)
 
+(eval-when-compile
+  (declare-function subword-backward "subword"))
+
 (defgroup ace-pinyin nil
   "Make `ace-jump-char-mode' capable of jumping to Chinese characters"
   :group 'ace-jump-mode)
