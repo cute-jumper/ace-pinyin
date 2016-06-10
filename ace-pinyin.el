@@ -1,4 +1,4 @@
-;;; ace-pinyin.el --- Jump to Chinese characters using ace-jump-mode or avy
+;;; ace-pinyin.el --- Jump to Chinese characters using avy or ace-jump-mode
 
 ;; Copyright (C) 2015  Junpeng Qiu
 
@@ -276,8 +276,8 @@
   (declare-function subword-backward "subword"))
 
 (defgroup ace-pinyin nil
-  "Make `ace-jump-char-mode' capable of jumping to Chinese characters"
-  :group 'ace-jump-mode)
+  "Jump to Chinese characters using `avy' or `ace-jump-mode'."
+  :group 'avy)
 
 (defcustom ace-pinyin--jump-word-timeout 1
   "Seconds to wait for input."
