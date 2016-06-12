@@ -4,6 +4,8 @@
 
 Jump to Chinese characters using =avy= or =ace-jump-mode=.
 
+使用 =avy= 或者 =ace-jump-mode= 跳转到中文字符。
+
 * Setup
   Install via [[http://melpa.org/#/ace-pinyin][melpa]].
 
