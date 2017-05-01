@@ -5,7 +5,7 @@
 ;; Author: Junpeng Qiu <qjpchmail@gmail.com>
 ;; URL: https://github.com/cute-jumper/ace-pinyin
 ;; Version: 0.2
-;; Package-Requires: ((ace-jump-mode "2.0") (avy "0.2.0") (pinyinlib "0.1.0"))
+;; Package-Requires: ((avy "0.2.0") (pinyinlib "0.1.0"))
 ;; Keywords: extensions
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -269,9 +269,9 @@
 
 ;;; Code:
 
-(require 'ace-jump-mode)
 (require 'avy)
 (require 'pinyinlib)
+(require 'ace-jump-mode nil t)
 
 (eval-when-compile
   (declare-function subword-backward "subword"))
