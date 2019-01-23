@@ -337,7 +337,7 @@ Default value is only using simplified Chinese characters.")
   (let ((regexp (ace-pinyin--build-regexp query-char prefix)))
     (if ace-pinyin-use-avy
         (avy-with avy-goto-char
-          (avy--generic-jump regexp nil avy-style))
+          (avy--generic-jump regexp nil))
       (if ace-jump-current-mode (ace-jump-done))
       (if (eq (ace-jump-char-category query-char) 'other)
           (error "[AceJump] Non-printable character"))
@@ -368,8 +368,7 @@ Default value is only using simplified Chinese characters.")
      (pinyinlib-build-regexp-string (string char1 char2)
                                     (not ace-pinyin-enable-punctuation-translation)
                                     (not ace-pinyin-simplified-chinese-only-p))
-     arg
-     avy-style)))
+     arg)))
 
 (defun ace-pinyin-jump-char-in-line (char)
   "Ace-pinyn replacement of `avy-goto-char-in-line'."
@@ -378,7 +377,6 @@ Default value is only using simplified Chinese characters.")
     (avy--generic-jump
      (ace-pinyin--build-regexp char nil)
      avy-all-windows
-     avy-style
      (line-beginning-position)
      (line-end-position))))
 
@@ -406,7 +404,7 @@ Default value is only using simplified Chinese characters.")
                           (let ((chinese-regexp (ace-pinyin--build-regexp char t)))
                             (unless (string= chinese-regexp "")
                               (concat "\\|" chinese-regexp))))))))
-      (avy--generic-jump regex arg avy-style))))
+      (avy--generic-jump regex arg))))
 
 (defun ace-pinyin-goto-subword-0 (&optional arg predicate)
   "Ace-pinyin replacement of `avy-goto-subword-0'."
@@ -460,7 +458,7 @@ Default value is only using simplified Chinese characters.")
           (not ace-pinyin-simplified-chinese-only-p))))
     (if ace-pinyin-use-avy
         (avy-with avy-goto-char
-          (avy--generic-jump regexp nil avy-style))
+          (avy--generic-jump regexp nil))
       (if ace-jump-current-mode (ace-jump-done))
 
       (let ((case-fold-search nil))
