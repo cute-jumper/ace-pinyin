@@ -278,7 +278,14 @@
 
 ;; backward compatible with avy before the introduce of avy-jump
 (when (not (boundp 'avy-jump))
-  (defalias 'avy-jump 'avy--generic-jump))
+  (cl-defun avy-jump (regex &key window-flip beg end action)
+    "Jump to REGEX.
+The window scope is determined by `avy-all-windows'.
+When WINDOW-FLIP is non-nil, do the opposite of `avy-all-windows'.
+BEG and END narrow the scope where candidates are searched.
+ACTION is a function that takes point position as an argument."
+    (setq avy-action (or action avy-action))
+    (avy--generic-jump regex window-flip beg end)))
 
 (defgroup ace-pinyin nil
   "Jump to Chinese characters using `avy' or `ace-jump-mode'."
