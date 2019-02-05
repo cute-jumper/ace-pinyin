@@ -276,6 +276,10 @@
 (eval-when-compile
   (declare-function subword-backward "subword"))
 
+;; backward compatible with avy before the introduce of avy-jump
+(when (not (boundp 'avy-jump))
+  (defalias 'avy-jump 'avy--generic-jump))
+
 (defgroup ace-pinyin nil
   "Jump to Chinese characters using `avy' or `ace-jump-mode'."
   :group 'avy)
@@ -337,7 +341,7 @@ Default value is only using simplified Chinese characters.")
   (let ((regexp (ace-pinyin--build-regexp query-char prefix)))
     (if ace-pinyin-use-avy
         (avy-with avy-goto-char
-          (avy--generic-jump regexp nil))
+          (avy-jump regexp nil))
       (if ace-jump-current-mode (ace-jump-done))
       (if (eq (ace-jump-char-category query-char) 'other)
           (error "[AceJump] Non-printable character"))
@@ -364,7 +368,7 @@ Default value is only using simplified Chinese characters.")
                      (read-char "char 2: ")
                      current-prefix-arg))
   (avy-with avy-goto-char-2
-    (avy--generic-jump
+    (avy-jump
      (pinyinlib-build-regexp-string (string char1 char2)
                                     (not ace-pinyin-enable-punctuation-translation)
                                     (not ace-pinyin-simplified-chinese-only-p))
@@ -374,7 +378,7 @@ Default value is only using simplified Chinese characters.")
   "Ace-pinyn replacement of `avy-goto-char-in-line'."
   (interactive (list (read-char "char: " t)))
   (avy-with avy-goto-char
-    (avy--generic-jump
+    (avy-jump
      (ace-pinyin--build-regexp char nil)
      avy-all-windows
      (line-beginning-position)
@@ -404,7 +408,7 @@ Default value is only using simplified Chinese characters.")
                           (let ((chinese-regexp (ace-pinyin--build-regexp char t)))
                             (unless (string= chinese-regexp "")
                               (concat "\\|" chinese-regexp))))))))
-      (avy--generic-jump regex arg))))
+      (avy-jump regex arg))))
 
 (defun ace-pinyin-goto-subword-0 (&optional arg predicate)
   "Ace-pinyin replacement of `avy-goto-subword-0'."
@@ -458,7 +462,7 @@ Default value is only using simplified Chinese characters.")
           (not ace-pinyin-simplified-chinese-only-p))))
     (if ace-pinyin-use-avy
         (avy-with avy-goto-char
-          (avy--generic-jump regexp nil))
+          (avy-jump regexp nil))
       (if ace-jump-current-mode (ace-jump-done))
 
       (let ((case-fold-search nil))
