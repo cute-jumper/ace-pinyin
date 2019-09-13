@@ -276,7 +276,7 @@
 (eval-when-compile
   (declare-function subword-backward "subword"))
 
-;; backward compatible with avy before the introduce of avy-jump
+;; backward compatible with avy before the introduction of avy-jump
 (when (not (boundp 'avy-jump))
   (cl-defun avy-jump (regex &key window-flip beg end action)
     "Jump to REGEX.
