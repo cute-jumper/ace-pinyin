@@ -276,6 +276,17 @@
 (eval-when-compile
   (declare-function subword-backward "subword"))
 
+;; backward compatible with avy before the introduction of avy-jump
+(when (not (boundp 'avy-jump))
+  (cl-defun avy-jump (regex &key window-flip beg end action)
+    "Jump to REGEX.
+The window scope is determined by `avy-all-windows'.
+When WINDOW-FLIP is non-nil, do the opposite of `avy-all-windows'.
+BEG and END narrow the scope where candidates are searched.
+ACTION is a function that takes point position as an argument."
+    (setq avy-action (or action avy-action))
+    (avy--generic-jump regex window-flip beg end)))
+
 (defgroup ace-pinyin nil
   "Jump to Chinese characters using `avy' or `ace-jump-mode'."
   :group 'avy)
@@ -337,7 +348,7 @@ Default value is only using simplified Chinese characters.")
   (let ((regexp (ace-pinyin--build-regexp query-char prefix)))
     (if ace-pinyin-use-avy
         (avy-with avy-goto-char
-          (avy--generic-jump regexp nil))
+          (avy-jump regexp :window-flip nil))
       (if ace-jump-current-mode (ace-jump-done))
       (if (eq (ace-jump-char-category query-char) 'other)
           (error "[AceJump] Non-printable character"))
@@ -364,21 +375,21 @@ Default value is only using simplified Chinese characters.")
                      (read-char "char 2: ")
                      current-prefix-arg))
   (avy-with avy-goto-char-2
-    (avy--generic-jump
+    (avy-jump
      (pinyinlib-build-regexp-string (string char1 char2)
                                     (not ace-pinyin-enable-punctuation-translation)
                                     (not ace-pinyin-simplified-chinese-only-p))
-     arg)))
+     :window-flip arg)))
 
 (defun ace-pinyin-jump-char-in-line (char)
   "Ace-pinyn replacement of `avy-goto-char-in-line'."
   (interactive (list (read-char "char: " t)))
   (avy-with avy-goto-char
-    (avy--generic-jump
+    (avy-jump
      (ace-pinyin--build-regexp char nil)
-     avy-all-windows
-     (line-beginning-position)
-     (line-end-position))))
+     :window-flip avy-all-windows
+     :beg (line-beginning-position)
+     :end (line-end-position))))
 
 (defun ace-pinyin-goto-word-0 (arg)
   "Ace-pinyin replacement of `avy-goto-word-0'."
@@ -404,7 +415,7 @@ Default value is only using simplified Chinese characters.")
                           (let ((chinese-regexp (ace-pinyin--build-regexp char t)))
                             (unless (string= chinese-regexp "")
                               (concat "\\|" chinese-regexp))))))))
-      (avy--generic-jump regex arg))))
+      (avy-jump regex :window-flip arg))))
 
 (defun ace-pinyin-goto-subword-0 (&optional arg predicate)
   "Ace-pinyin replacement of `avy-goto-subword-0'."
@@ -458,7 +469,7 @@ Default value is only using simplified Chinese characters.")
           (not ace-pinyin-simplified-chinese-only-p))))
     (if ace-pinyin-use-avy
         (avy-with avy-goto-char
-          (avy--generic-jump regexp nil))
+          (avy-jump regexp :window-flip nil))
       (if ace-jump-current-mode (ace-jump-done))
 
       (let ((case-fold-search nil))
