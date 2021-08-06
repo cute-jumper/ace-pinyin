@@ -490,7 +490,8 @@ If ARG is non-nil, read input from Minibuffer."
     ;; Read input by using timer
     (message "Query word: ")
     (let (char string)
-      (while (setq char (read-char nil nil ace-pinyin--jump-word-timeout))
+      (while (and (setq char (read-char nil nil ace-pinyin--jump-word-timeout))
+                  (not (char-equal char ?)))
         (setq string (concat string (char-to-string char)))
         (message (concat "Query word: " string)))
       (if string
