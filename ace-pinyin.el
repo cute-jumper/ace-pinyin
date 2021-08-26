@@ -511,8 +511,9 @@ Without PREFIX, search both Chinese and English."
 ;;;###autoload
 (define-minor-mode ace-pinyin-mode
   "Toggle `ace-pinyin-mode'."
-  nil
-  " AcePY"
+  :init-value nil
+  :lighter " AcePY"
+  :global nil
   :group ace-pinyin
   (if ace-pinyin-mode
       (if ace-pinyin-use-avy
