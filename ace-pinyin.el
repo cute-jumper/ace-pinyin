@@ -343,6 +343,11 @@ Default value is only using simplified Chinese characters.")
                                (not ace-pinyin-simplified-chinese-only-p)
                                prefix))
 
+(defun ace-pinyin--build-string-regexp (string)
+  (pinyinlib-build-regexp-string string
+                               (not ace-pinyin-enable-punctuation-translation)
+                               (not ace-pinyin-simplified-chinese-only-p)))
+
 (defun ace-pinyin--jump-impl (query-char &optional prefix)
   "Internal implementation of `ace-pinyin-jump-char'."
   (let ((regexp (ace-pinyin--build-regexp query-char prefix)))
@@ -376,9 +381,7 @@ Default value is only using simplified Chinese characters.")
                      current-prefix-arg))
   (avy-with avy-goto-char-2
     (avy-jump
-     (pinyinlib-build-regexp-string (string char1 char2)
-                                    (not ace-pinyin-enable-punctuation-translation)
-                                    (not ace-pinyin-simplified-chinese-only-p))
+     (ace-pinyin--build-string-regexp (string char1 char2))
      :window-flip arg)))
 
 (defun ace-pinyin-jump-char-in-line (char)
@@ -463,10 +466,7 @@ Default value is only using simplified Chinese characters.")
 
 (defun ace-pinyin--jump-word-1 (query)
   (let ((regexp
-         (pinyinlib-build-regexp-string
-          query
-          (not ace-pinyin-enable-punctuation-translation)
-          (not ace-pinyin-simplified-chinese-only-p))))
+         (ace-pinyin--build-string-regexp query)))
     (if ace-pinyin-use-avy
         (avy-with avy-goto-char
           (avy-jump regexp :window-flip nil))
@@ -497,6 +497,19 @@ If ARG is non-nil, read input from Minibuffer."
       (if string
           (ace-pinyin--jump-word-1 string)
         (error "[AcePinyin] Empty input, timeout")))))
+
+;;;###autoload
+(defun ace-pinyin-goto-char-timer (&optional arg)
+  "Read one or many consecutive chars and jump to the first one.
+The window scope is determined by `avy-all-windows' (ARG negates it)."
+  (interactive "P")
+  (let ((avy-all-windows (if arg
+                             (not avy-all-windows)
+                           avy-all-windows)))
+    (avy-with avy-goto-char-timer
+      (setq avy--old-cands
+            (avy--read-candidates #'ace-pinyin--build-string-regexp))
+      (avy-process avy--old-cands))))
 
 ;;;###autoload
 (defun ace-pinyin-dwim (&optional prefix)
